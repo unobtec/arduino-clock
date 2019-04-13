@@ -1,0 +1,33 @@
+#!/bin/sh
+
+MASK=$1
+if [ -z "$MASK" ];
+then
+    MASK="/dev/cu.usbmodem*"
+fi
+
+DEVICE=`ls $MASK 2>/dev/null`
+
+if [ -z "$DEVICE" ]; then
+    echo "Found no device matching '$MASK'"
+    exit 2
+fi
+
+NUM=`echo "$DEVICE" | wc -l`
+
+if (( $NUM == 1 )); then
+    echo "Using device: $DEVICE"
+else
+    echo "Found several devices:"
+    echo $DEVICE
+    echo "Use ./sync-clock <device-name> to specify the device explicitly"
+    exit 2
+fi
+
+echo "Setting 24-hour clock format"
+echo "F24" > $DEVICE
+
+echo "Setting the time"
+date "+T%Y-%m-%d %H:%M:%S" > $DEVICE
+
+echo "All done."

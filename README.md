@@ -28,7 +28,7 @@ You can install all dependencies via Arduino > Sketch > Include Library > Manage
 
 # Controlling the clock from your computer
 
-The clock, when plugged into USB port of your computer, is recognized as a serial device whcih you can send commands to. Commands must be followed with either `<CR>`, `<LF>`, or `<CR><LF>` characters. Recognized commands are:
+The clock, when plugged into USB port of your computer, is recognized as a serial device which you can send commands to. Commands must be followed with either `<CR>`, `<LF>`, or `<CR><LF>` characters. Recognized commands are:
 
 - `F24`: switch to a 24-hour format
 - `F12`: switch to a 12-hour format

@@ -96,6 +96,7 @@ int lastEncoderButtonState = UNKNOWN;
 
 const unsigned long debounceDelay = 50;
 const unsigned long updateInterval = 100;
+const unsigned long longPressDelay = 5000; // 5 sec
 
 unsigned long lastDebounceTime = 0;
 unsigned long prevUpdateTime = 0;
@@ -107,6 +108,9 @@ bool is12HourFormat = true;
 bool is12HourFormat = false;
 #endif
 bool timeWasSet = false;
+bool isEncoderPressed = false;
+bool canResetSeconds = false;
+unsigned long lasEncoderPressTime = 0;
 
 String prevAP = "";
 int prevAPPos = 0;
@@ -240,13 +244,23 @@ void pollPowerSwitch()
 
 void pollEncoderButton()
 {
+    unsigned long t = millis();
+
+    if (canResetSeconds && isEncoderPressed && (t - lasEncoderPressTime) > longPressDelay)
+    {
+        isEncoderPressed = false;
+        canResetSeconds = false;
+        is12HourFormat = !is12HourFormat;
+        turnOn(); // reset screen
+    }
+
     int reading = digitalRead(ENCODER_BTN_PIN);
     if (reading != lastEncoderButtonState)
     {
-        lastDebounceTime = millis();
+        lastDebounceTime = t;
     }
 
-    if ((millis() - lastDebounceTime) > debounceDelay)
+    if ((t - lastDebounceTime) > debounceDelay)
     {
         if (reading != encoderButtonState)
         {
@@ -257,14 +271,21 @@ void pollEncoderButton()
 #ifdef DEBUG
                 Serial.println("Encoder button released");
 #endif
+                isEncoderPressed = false;
+                if (canResetSeconds)
+                {
+                    // reset seconds
+                    adjustTime(-second());
+                }
             }
             else
             {
 #ifdef DEBUG
                 Serial.println("Encoder button pressed");
 #endif
-                // reset seconds
-                adjustTime(-second());
+                isEncoderPressed = true;
+                canResetSeconds = true;
+                lasEncoderPressTime = t;
             }
         }
     }
@@ -290,7 +311,16 @@ void pollEncoder()
 
     long sign = delta < 0 ? -1 : 1;
 
-    adjustTime(delta * 60); // minutes
+    if (isEncoderPressed)
+    {
+        canResetSeconds = false;
+        adjustTime(delta * 60 * 60); // hours
+    }
+    else
+    {
+        adjustTime(delta * 60); // minutes
+    }
+
     timeWasSet = true;
 }
 

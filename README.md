@@ -26,6 +26,14 @@ You can install all dependencies via Arduino > Sketch > Include Library > Manage
 - `ssd1306` library v1.7.0 by Alexey Dydna (later versions will require font recompiling)
 - `Time` library by Michael Margolis
 
+# Controlling the clock with the encoder
+
+- To change minutes, rotate the encoder in either direction (this will also change hours when going from :59 to :00 and vice versa)
+- To change hours, press and rotate the encoder while it is pressed
+- To reset seconds, quickly press the encoder without rotating it
+- To switch between 12- and 24-hour format, press and hold the encoder for 5 seconds without rotating it
+- To turn the display off and back on, use the On/Off switch. Note that both Arduino and OLED screens will still be powered up; this will simply make the screen appear blank.
+
 # Controlling the clock from your computer
 
 The clock, when plugged into USB port of your computer, is recognized as a serial device which you can send commands to. Commands must be followed with either `<CR>`, `<LF>`, or `<CR><LF>` characters. Recognized commands are:

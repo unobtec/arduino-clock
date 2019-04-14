@@ -1,29 +1,9 @@
 /*
     MIT License
 
-    Setting up the clock:
+    See https://github.com/unobtec/arduino-clock
+    for build instructions.
 
-    Get the name of your connected Arduino:
-
-    $ ls /dev/cu.usbmodem*
-
-    If the modem is found, you will see something like
-    "/dev/cu.usbmodem14121". That's your device.
-
-    # set 12-hour format (default format is 24-hour):
-    echo "F12" > /dev/cu.usbmodem14121
-
-    # set current date/time:
-    date "+T%Y-%m-%d %H:%M:%S" > /dev/cu.usbmodem14121
-
-    ---
-
-    Dependencies (install via
-    Arduino > Sketch > Include Library > Manage Libraries...):
-
-    - `Encoder` library by Paul Stoffregen
-    - `ssd1306` library v1.7.0 by Alexey Dydna (later versions will require font recompiling)
-    - `Time` library by Michael Margolis
 */
 
 #define ENCODER_USE_INTERRUPTS

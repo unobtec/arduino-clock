@@ -19,36 +19,8 @@
 
 #define UNKNOWN -1;
 
-// *** Configurable options ***
-
-// uncomment to show some debug info in the serial output
-//#define DEBUG
-
-// uncomment to default to a 24-hour clock format
-#define DEFAULT_TO_12H_FORMAT
-
-// comment-out if you don't need the on-off switch functionality
-#define HAS_POWER_SWITCH
-
-// uncomment to swap displays
-//#define FLIP_DISPLAYS
-
-// uncomment to change the encoder direction
-//#define FLIP_ENCODER_DIRECTION
-
-// *** End of configurable options ***
-
-// Pin assignments (change only if your wiring is different
-// from the default one)
-
-#define ENCODER_PIN_A 0
-#define ENCODER_PIN_B 1
-#define ENCODER_BTN_PIN 9
-
-#define ON_OFF_SWITCH_PIN 4
-
-#define I2C_PORT_A SSD1306_SA // 0x3C
-#define I2C_PORT_B SSD1306_SA + 1 // 0x3D
+#include "config.h"
+#include "hardware.h"
 
 #ifndef FLIP_DISPLAYS
     const int leftDisplayI2CPort = I2C_PORT_A;
